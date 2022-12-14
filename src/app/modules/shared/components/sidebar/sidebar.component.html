@@ -1,0 +1,61 @@
+<div id="left-sidebar" class="sidebar">
+  <div class="navbar-brand">
+    <a href="index.html"><span class="font700">appreview</span></a>
+    <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i
+        class="lnr lnr-menu icon-close"></i></button>
+  </div>
+  <div class="sidebar-scroll">
+    <div class="user-account">
+      <div class="user_div">
+        <img src="assets/images/user.png" class="user-photo" alt="User Profile Picture">
+      </div>
+      <div class="username" *ngIf="user">
+        <span>Welcome</span> <br>
+        <strong>{{user.username}}</strong>
+      </div>
+    </div>
+    <nav id="left-sidebar-nav" class="sidebar-nav" *ngIf="role == 'superAdmin'">
+      <ul id="main-menu" class="metismenu">
+        <li class="header">Main</li>
+
+        <li><a [routerLink]="['/dashboard']" routerLinkActive="router-link-active"><i
+              class="icon-speedometer"></i><span>Dashboard</span></a></li>
+
+
+
+
+
+
+        <li>
+          <a href="javascript:void(0);" class="has-arrow"><i class="icon-cup"></i><span>Manage
+              Users</span></a>
+          <ul>
+            <li><a [routerLink]="['/dashboard/users/all']" routerLinkActive="router-link-active">
+                Users List</a></li>
+
+
+          </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0);" class="has-arrow"><i class="icon-cup"></i><span>Manage
+              Cost</span></a>
+          <ul>
+            <li><a [routerLink]="['/dashboard/cost/manage']" routerLinkActive="router-link-active">
+                Update Cost</a></li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Settings</span></a>
+          <ul>
+            <li><a [routerLink]="['/dashboard/setting/profile']" routerLinkActive="router-link-active">Admin
+                Profile</a></li>
+
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+
+  </div>
+</div>
