@@ -1,6 +1,6 @@
 <div id="left-sidebar" class="sidebar">
   <div class="navbar-brand">
-    <a href="index.html"><span class="font700">appreview</span></a>
+    <a href="index.html"><span class="font700">App Reviewers</span></a>
     <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i
         class="lnr lnr-menu icon-close"></i></button>
   </div>
@@ -27,8 +27,7 @@
 
 
         <li>
-          <a href="javascript:void(0);" class="has-arrow"><i class="icon-cup"></i><span>Manage
-              Users</span></a>
+          <a href="javascript:void(0);" class="has-arrow"><i class="icon-cup"></i><span>Users</span></a>
           <ul>
             <li><a [routerLink]="['/dashboard/users/all']" routerLinkActive="router-link-active">
                 Users List</a></li>
@@ -37,11 +36,12 @@
           </ul>
         </li>
         <li>
-          <a href="javascript:void(0);" class="has-arrow"><i class="icon-cup"></i><span>Manage
-              Cost</span></a>
+          <a href="javascript:void(0);" class="has-arrow"><i class="icon-cup"></i><span>Manage</span></a>
           <ul>
             <li><a [routerLink]="['/dashboard/cost/manage']" routerLinkActive="router-link-active">
                 Update Cost</a></li>
+                <li><a [routerLink]="['/dashboard/cost/app-names']" routerLinkActive="router-link-active">
+                    App Names</a></li>
           </ul>
         </li>
 

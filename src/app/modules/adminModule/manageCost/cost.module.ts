@@ -16,9 +16,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgxPaginationModule,
     SelectDropDownModule,
     SharedModule,
-    CoreModule
+    CoreModule,
   ],
   providers: [],
   // entryComponents: []
 })
-export class costModule { }
+export class costModule {}

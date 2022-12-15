@@ -1,0 +1,45 @@
+<div id="wrapper">
+
+	<app-header></app-header>
+
+	<app-sidebar></app-sidebar>
+
+	<div id="main-content">
+		<div class="container-fluid">
+			<div class="block-header">
+				<div class="row clearfix">
+					<div class="col-md-6 col-sm-12">
+						<h1>Manage App Names</h1>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a [routerLink]="['/dashboard']">App Reviewers</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Manage App Names</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="row clearfix">
+				<div class="col-8">
+					<form class="form-auth-small" name="namesForm" (ngSubmit)="updateNames()"
+						#f="ngForm" novalidate>
+						<div class="mb-3">
+						</div>
+						<div class="form-group">
+							<label>App Names</label>
+							<textarea class="form-control" rows="5" name="names" placeholder="Semicolon separated list of names"
+								[(ngModel)]="names" #cst="ngModel" autofocus="" required></textarea>
+						</div>
+						<div class="login_btns">
+							<button type="submit" class="btn btn-round btn-block">Update</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

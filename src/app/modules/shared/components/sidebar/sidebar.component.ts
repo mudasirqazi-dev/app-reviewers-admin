@@ -8,7 +8,7 @@ import { userService } from './../../../userModule/services/userService';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
   login: boolean = false;
@@ -22,24 +22,20 @@ export class SidebarComponent implements OnInit {
     private userService: userService,
     private userInfoService: UserInfoService
   ) {
-    this.loadScript("assets/bundles/vendorscripts.bundle.js");
-    this.loadScript("assets/bundles/mainscripts.bundle.js");
+    this.loadScript('assets/bundles/vendorscripts.bundle.js');
+    this.loadScript('assets/bundles/mainscripts.bundle.js');
     this.role = this.userInfoService.getUserRole();
     this.getLoginUser();
   }
 
-  ngOnInit() {
-  }
-
-
+  ngOnInit() {}
 
   getLoginUser() {
     let id = this.userInfoService.getAuthData();
-    this.userService.getUserById(id).subscribe(res => {
-      this.user = res.data
-    })
+    this.userService.getUserById(id).subscribe((res) => {
+      this.user = res.data;
+    });
   }
-
 
   public loadScript(url) {
     let node = document.createElement('script');
@@ -48,11 +44,8 @@ export class SidebarComponent implements OnInit {
     document.getElementsByTagName('head')[0].appendChild(node);
   }
 
-
   logout() {
-    localStorage.removeItem("_authad@1")
-    this.router.navigate(['/user/login'])
+    localStorage.removeItem('_authad@1');
+    this.router.navigate(['/user/login']);
   }
-
-
 }
