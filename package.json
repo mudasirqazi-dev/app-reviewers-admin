@@ -1,48 +1,49 @@
 {
-  "name": "appreview-admin",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^14.2.0",
-    "@angular/cdk": "^13.0.0",
-    "@angular/common": "^14.2.0",
-    "@angular/compiler": "^14.2.0",
-    "@angular/core": "^14.2.0",
-    "@angular/forms": "^14.2.0",
-    "@angular/material": "^13.0.0",
-    "@angular/platform-browser": "^14.2.0",
-    "@angular/platform-browser-dynamic": "^14.2.0",
-    "@angular/router": "^14.2.0",
-    "jquery": "^3.6.1",
-    "jwt-decode": "^3.1.2",
-    "moment": "^2.29.4",
-    "ng2-search-filter": "^0.5.1",
-    "ngx-daterangepicker-material": "^6.0.4",
-    "ngx-pagination": "^6.0.3",
-    "ngx-select-dropdown": "^3.2.0",
-    "rxjs": "~7.5.0",
-    "sweetalert2": "^11.6.15",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^14.2.3",
-    "@angular/cli": "~14.2.3",
-    "@angular/compiler-cli": "^14.2.0",
-    "@types/jasmine": "~4.0.0",
-    "jasmine-core": "~4.3.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~4.7.2"
-  }
+	"name": "admin",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@emotion/react": "^11.10.6",
+		"@emotion/styled": "^11.10.6",
+		"@mui/icons-material": "^5.11.11",
+		"@mui/material": "^5.11.12",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
+		"axios": "^1.2.0",
+		"moment": "^2.29.4",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-number-format": "^5.1.4",
+		"react-router-dom": "^6.4.3",
+		"react-scripts": "5.0.1",
+		"uuid": "^9.0.0",
+		"validator": "^13.7.0",
+		"web-vitals": "^2.1.4",
+		"zustand": "^4.1.4"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
 }
