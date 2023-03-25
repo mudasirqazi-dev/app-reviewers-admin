@@ -1,46 +1,47 @@
 import axios from "axios";
 import constants from "../utils/constants";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default class {
-	static get = async token => {
-		let result = { data: null, error: null };
-		const headers = {};
-		headers[constants.TOKEN_NAME] = token;
+  static get = async (token) => {
+    let result = { data: null, error: null };
+    const headers = {};
+    headers[constants.TOKEN_NAME] = token;
 
-		await axios
-			.get(`${process.env.REACT_APP_API_URL}/names`, {
-				headers: headers
-			})
-			.then(resp => {
-				if (resp.status === 200) {
-					result.data = resp.data;
-				}
-			})
-			.catch(err => {
-				result.error = err.response.data;
-			});
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/names`, {
+        headers: headers,
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          result.data = resp.data;
+        }
+      })
+      .catch((err) => {
+        result.error = err.response.data;
+      });
 
-		return result;
-	};
+    return result;
+  };
 
-	static update = async (token, data) => {
-		let result = { data: null, error: null };
-		const headers = {};
-		headers[constants.TOKEN_NAME] = token;
+  static update = async (token, data) => {
+    let result = { data: null, error: null };
+    const headers = {};
+    headers[constants.TOKEN_NAME] = token;
 
-		await axios
-			.post(`${process.env.REACT_APP_API_URL}/names`, data, {
-				headers: headers
-			})
-			.then(resp => {
-				if (resp.status === 200) {
-					result.data = resp.data;
-				}
-			})
-			.catch(err => {
-				result.error = err.response.data;
-			});
+    await axios
+      .post(`${process.env.REACT_APP_API_URL}/names`, data, {
+        headers: headers,
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          result.data = resp.data;
+        }
+      })
+      .catch((err) => {
+        result.error = err.response.data;
+      });
 
-		return result;
-	};
+    return result;
+  };
 }

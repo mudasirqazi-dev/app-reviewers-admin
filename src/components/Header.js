@@ -146,6 +146,17 @@ function Header() {
 										Manage
 									</Typography>
 								</MenuItem>
+								<MenuItem
+									key={"users"}
+									onClick={() => {
+										navigate("/users");
+										handleCloseNavMenu();
+									}}
+								>
+									<Typography textAlign="center">
+										Users	
+									</Typography>
+								</MenuItem>
 							</Menu>
 						</Box>
 						<Logo display={{ xs: "flex", md: "none" }} />
@@ -174,6 +185,16 @@ function Header() {
 								sx={{ my: 2, color: "white", display: "block" }}
 							>
 								Manage
+							</Button>
+							<Button
+								key="users"
+								onClick={() => {
+									navigate("/users");
+									handleCloseNavMenu();
+								}}
+								sx={{ my: 2, color: "white", display: "block" }}
+							>
+								Users
 							</Button>
 						</Box>
 
