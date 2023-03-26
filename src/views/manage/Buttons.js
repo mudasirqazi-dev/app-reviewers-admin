@@ -3,10 +3,10 @@ import useStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Grid, Typography } from "@mui/material";
 import { Text, Button } from "../../controls";
-import nameService from "../../services/name";
+import settingService from "../../services/setting";
 import { SaveTwoTone } from "@mui/icons-material";
 
-function Names() {
+function Buttons() {
   const navigate = useNavigate();
   const {
     token,
@@ -16,13 +16,13 @@ function Names() {
     setErrorMessage,
     setSuccessMessage,
   } = useStore((state) => state);
-  const [names, setNames] = useState("");
+  const [buttons, setButtons] = useState("");
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
 
     setIsLoading(true);
-    nameService.get(token).then((result) => {
+    settingService.get(token).then((result) => {
       if (result.error) {
         setErrorMessage(result.error);
         setIsLoading(false);
@@ -30,13 +30,13 @@ function Names() {
       }
 
       setIsLoading(false);
-      setNames(result.data.names);
+      setButtons(result.data.buttons);
     });
   }, []);
 
   const hanldeSubmit = (e) => {
     setIsLoading(true);
-    nameService.update(token, { names }).then((result) => {
+    settingService.updateButtons(token, { buttons }).then((result) => {
       if (result.error) {
         setErrorMessage(result.error);
         setIsLoading(false);
@@ -52,17 +52,17 @@ function Names() {
     <Grid container spacing={2} sx={{ p: 2, pt: 2 }}>
       <Grid item xs={12} md={12}>
         <Typography component="p" variant="h5">
-          App Names
+          Purchase Buttons
         </Typography>
       </Grid>
       <Grid item xs={12} md={12}>
         <Text
-          value={names}
-          onChange={setNames}
-          label="App Names"
+          value={buttons}
+          onChange={setButtons}
+          label="Purchase Buttons"
           multiline
           minRows={3}
-          helperText="Semicolon ( ; ) separated list of application names"
+          helperText="Semicolon ( ; ) separated list of buttons prices"
         />
         <Button
           text="Save Changes"
@@ -75,4 +75,4 @@ function Names() {
   );
 }
 
-export default Names;
+export default Buttons;

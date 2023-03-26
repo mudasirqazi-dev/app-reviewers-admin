@@ -44,4 +44,46 @@ export default class {
 
     return result;
   };
+
+  static updateButtons = async (token, data) => {
+    let result = { data: null, error: null };
+    const headers = {};
+    headers[constants.TOKEN_NAME] = token;
+
+    await axios
+      .post(`${process.env.REACT_APP_API_URL}/settings/buttons`, data, {
+        headers: headers,
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          result.data = resp.data;
+        }
+      })
+      .catch((err) => {
+        result.error = err.response.data;
+      });
+
+    return result;
+  };
+
+  static updateSubscription = async (token, data) => {
+    let result = { data: null, error: null };
+    const headers = {};
+    headers[constants.TOKEN_NAME] = token;
+
+    await axios
+      .post(`${process.env.REACT_APP_API_URL}/settings/subscription`, data, {
+        headers: headers,
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          result.data = resp.data;
+        }
+      })
+      .catch((err) => {
+        result.error = err.response.data;
+      });
+
+    return result;
+  };
 }

@@ -362,7 +362,7 @@ function Users() {
                         <TableCell component="th" scope="row" align="left">
                           Users ({users.length} records)
                         </TableCell>
-                        <TableCell component="th" scope="row" align="center">
+                        <TableCell component="th" scope="row" align="left">
                           Email
                         </TableCell>
                         <TableCell component="th" scope="row" align="center">
@@ -372,7 +372,7 @@ function Users() {
                           Status
                         </TableCell>
                         <TableCell component="th" scope="row" align="center">
-                          Engaged / Blocked
+                          Active / Blocked
                         </TableCell>
                         <TableCell component="th" scope="row" align="center">
                           Credits
@@ -401,7 +401,7 @@ function Users() {
                           <TableCell component="td" scope="row" align="left">
                             {row?.name}
                           </TableCell>
-                          <TableCell component="td" scope="row" align="center">
+                          <TableCell component="td" scope="row" align="left">
                             {row?.email}
                           </TableCell>
                           <TableCell component="td" scope="row" align="center">
@@ -418,7 +418,7 @@ function Users() {
                             {row?.blocked ? (
                               <Typography color="error">Blocked</Typography>
                             ) : (
-                              <Typography>Engaged</Typography>
+                              <Typography>Active</Typography>
                             )}
                           </TableCell>
                           <TableCell component="td" scope="row" align="center">
@@ -452,14 +452,14 @@ function Users() {
                                   setOpenForEdit(true);
                                 }}
                               >
-                                Edit
+                                Edit name
                               </MenuItem>
                               <MenuItem
                                 onClick={() => {
                                   setOpenForPoints(true);
                                 }}
                               >
-                                Add Credits
+                                Add credits
                               </MenuItem>
                               <MenuItem
                                 onClick={() => {
@@ -473,7 +473,7 @@ function Users() {
                                   setOpenConfirmDialogForBlockingUser(true);
                                 }}
                               >
-                                {row?.blocked ? "Engage User" : "Block User"}
+                                {row?.blocked ? "Unblock user" : "Block user"}
                               </MenuItem>
                               <MenuItem
                                 onClick={() => {
@@ -482,7 +482,7 @@ function Users() {
                                   );
                                 }}
                               >
-                                Restore Password
+                                Restore password
                               </MenuItem>
                               <MenuItem
                                 sx={{ color: "red" }}

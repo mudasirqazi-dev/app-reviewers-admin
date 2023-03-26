@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import useStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Grid, Typography } from "@mui/material";
-import { Text, Button } from "../../controls";
-import nameService from "../../services/name";
+import { Button, Number } from "../../controls";
+import settingService from "../../services/setting";
 import { SaveTwoTone } from "@mui/icons-material";
 
-function Names() {
+function Buttons() {
   const navigate = useNavigate();
   const {
     token,
@@ -16,13 +16,13 @@ function Names() {
     setErrorMessage,
     setSuccessMessage,
   } = useStore((state) => state);
-  const [names, setNames] = useState("");
+  const [button, setButton] = useState("");
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
 
     setIsLoading(true);
-    nameService.get(token).then((result) => {
+    settingService.get(token).then((result) => {
       if (result.error) {
         setErrorMessage(result.error);
         setIsLoading(false);
@@ -30,39 +30,41 @@ function Names() {
       }
 
       setIsLoading(false);
-      setNames(result.data.names);
+      setButton(result.data.subscription);
     });
   }, []);
 
   const hanldeSubmit = (e) => {
     setIsLoading(true);
-    nameService.update(token, { names }).then((result) => {
-      if (result.error) {
-        setErrorMessage(result.error);
-        setIsLoading(false);
-        return;
-      }
+    settingService
+      .updateSubscription(token, { subscription: button })
+      .then((result) => {
+        if (result.error) {
+          setErrorMessage(result.error);
+          setIsLoading(false);
+          return;
+        }
 
-      setIsLoading(false);
-      setSuccessMessage("Data updated successfully!");
-    });
+        setIsLoading(false);
+        setSuccessMessage("Data updated successfully!");
+      });
   };
 
   return (
     <Grid container spacing={2} sx={{ p: 2, pt: 2 }}>
       <Grid item xs={12} md={12}>
         <Typography component="p" variant="h5">
-          App Names
+          Subscription Amount
         </Typography>
       </Grid>
       <Grid item xs={12} md={12}>
-        <Text
-          value={names}
-          onChange={setNames}
-          label="App Names"
+        <Number
+          value={button}
+          onChange={setButton}
+          label="Subscription Amount"
           multiline
           minRows={3}
-          helperText="Semicolon ( ; ) separated list of application names"
+          helperText="Add monthly subscription price"
         />
         <Button
           text="Save Changes"
@@ -75,4 +77,4 @@ function Names() {
   );
 }
 
-export default Names;
+export default Buttons;
