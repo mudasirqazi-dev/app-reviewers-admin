@@ -116,9 +116,14 @@ function Users() {
   const [obj, setObj] = useState(null);
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
-  const { token, isLoggedIn, setIsLoading, setErrorMessage } = useStore(
-    (state) => state
-  );
+
+  const {
+    token,
+    isLoggedIn,
+    setIsLoading,
+    setErrorMessage,
+    setSuccessMessage,
+  } = useStore((state) => state);
   const [isDone, setIsDone] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -292,8 +297,8 @@ function Users() {
 
       {/* Open Dialog for editing user name */}
       <DialogForEdit
-        open={openForEdit}
         obj={obj}
+        open={openForEdit}
         onClose={() => {
           setObj(null);
           setOpenForEdit(false);

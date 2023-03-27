@@ -15,6 +15,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
+      style={{ width: "100%" }}
       {...other}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
@@ -65,13 +66,13 @@ function Manage() {
             sx={{
               borderRight: 1,
               borderColor: "divider",
-              width: "200px",
+              width: "270px",
             }}
           >
             <Tab label="Cost" {...a11yProps(0)} />
             <Tab label="App Names" {...a11yProps(1)} />
             <Tab label="Purchase Buttons" {...a11yProps(2)} />
-            <Tab label="Subscription Button" {...a11yProps(3)} />
+            <Tab label="Subscription Amount" {...a11yProps(3)} />
           </Tabs>
           <TabPanel value={value} index={0}>
             <Costs />

@@ -7,9 +7,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Text from "../controls/Text";
 import useStore from "../store/store";
-import userServices from "../services/user";
+import nameService from "../services/name";
 
-export default function DialogForEdit({ obj, open, onClose, onSuccess }) {
+export default function DialogForAppName({ obj, open, onClose, onSuccess }) {
   let [newName, setNewName] = useState("");
   const { token, setIsLoading, setErrorMessage, setSuccessMessage } = useStore(
     (state) => state
@@ -26,8 +26,8 @@ export default function DialogForEdit({ obj, open, onClose, onSuccess }) {
     }
 
     setIsLoading(true);
-    userServices
-      .updateName(token, { userId: obj?._id, name: newName })
+    nameService
+      .update(token, { id: obj?._id, name: newName })
       .then((res) => {
         if (res.error) {
           setErrorMessage(res.error);
@@ -37,7 +37,7 @@ export default function DialogForEdit({ obj, open, onClose, onSuccess }) {
 
         setIsLoading(false);
         setNewName("");
-        setSuccessMessage("User name has been updated.");
+        setSuccessMessage("App name has been updated.");
         onSuccess();
       })
       .catch((err) => {
@@ -51,7 +51,7 @@ export default function DialogForEdit({ obj, open, onClose, onSuccess }) {
         <DialogTitle>Edit Name</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 1 }}>
-            Enter new name for user.
+            Enter new name for app.
           </DialogContentText>
 
           <Text
