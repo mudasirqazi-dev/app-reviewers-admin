@@ -2,6 +2,7 @@ import "./assets/css/style.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./views/home/Home";
 import Users from "./views/usersList/UsersList";
+import Payment from "./views/payments/Payment";
 import useStore from "./store/store";
 import Loading from "./components/Loading";
 import Login from "./views/auth/Login";
@@ -14,6 +15,8 @@ import Manage from "./views/manage/Manage";
 import ToastError from "./components/ToastError";
 import ToastSuccess from "./components/ToastSuccess";
 import ToastInfo from "./components/ToastInfo";
+import UserProfile from "./views/userProfile/UserProfile";
+import Searches from "./views/searches/Searches";
 
 function App() {
   const {
@@ -53,7 +56,10 @@ function App() {
         <Route exact path="/rp" element={<ResetPassword />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/users" element={<Users />} />
+        <Route exact path="/payments" element={<Payment />} />
+        <Route exact path="/searches" element={<Searches />} />
         <Route exact path="/profile" element={<Profile />} />
+        <Route path="/user/:id" element={<UserProfile />} />
         <Route exact path="/settings" element={<ChangePassword />} />
         <Route exact path="/manage" element={<Manage />} />
       </Routes>

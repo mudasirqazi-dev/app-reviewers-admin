@@ -23,6 +23,26 @@ export default class {
     return result;
   };
 
+  static getTotalUsers = async (token) => {
+    let result = { data: null, error: null };
+    const headers = {};
+    headers[constants.TOKEN_NAME] = token;
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/users/totalUsers`, {
+        headers: headers,
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          result.data = resp.data;
+        }
+      })
+      .catch((err) => {
+        result.error = err.response.data;
+      });
+
+    return result;
+  };
+
   static getById = async (id) => {
     let result = { data: null, error: null };
     await axios

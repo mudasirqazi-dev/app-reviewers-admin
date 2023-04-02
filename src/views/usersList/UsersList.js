@@ -28,7 +28,7 @@ import {
   KeyboardArrowLeft,
   FirstPage as FirstPageIcon,
 } from "@mui/icons-material";
-import { Button, Text } from "../../controls";
+import { Button, LinkButton, Text } from "../../controls";
 import { useTheme } from "@mui/material/styles";
 import Confirm from "../../components/Confirm";
 import FormDialog from "../../components/DialogForCreate";
@@ -404,7 +404,10 @@ function Users() {
                           }}
                         >
                           <TableCell component="td" scope="row" align="left">
-                            {row?.name}
+                            <LinkButton
+                              to={`/user/${row?._id}`}
+                              text={row?.name}
+                            ></LinkButton>
                           </TableCell>
                           <TableCell component="td" scope="row" align="left">
                             {row?.email}
@@ -440,7 +443,7 @@ function Users() {
                               aria-haspopup="true"
                               onClick={(event) => handleClick(event, row)}
                             >
-                              <MoreVertIcon />
+                              <MoreVertIcon fontSize="small" />
                             </IconButton>
                             <Menu
                               id={`longMenu_${row?._id}`}
