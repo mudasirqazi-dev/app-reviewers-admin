@@ -10,17 +10,6 @@ import moment from "moment";
 export default function DateRangePickerValue({ arr, setArr }) {
   const [value, setValue] = useState([dayjs(arr[0]), dayjs(arr[1])]);
 
-  // useEffect(() => {
-  //   if (JSON.stringify(value) === JSON.stringify(arr))
-  //     setValue([dayjs(arr[0]), dayjs(arr[1])]);
-  // }, [arr]);
-
-  useEffect(() => {
-    // console.log(arr, value);
-    // if (JSON.stringify(value) === JSON.stringify(arr))
-    //   setValue([dayjs(arr[0]), dayjs(arr[1])]);
-  }, [arr]);
-
   useEffect(() => {
     if (value[1]) {
       setArr([
@@ -40,7 +29,6 @@ export default function DateRangePickerValue({ arr, setArr }) {
           <DateRangePicker
             value={value}
             onChange={(e) => {
-              console.log(e);
               setValue(e);
             }}
           />

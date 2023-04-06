@@ -261,7 +261,9 @@ function Searches() {
                             {row?.keyword}
                           </TableCell>
                           <TableCell component="td" scope="row" align="right">
-                            {Utils.formatToCurrency(row?.cost, "$")}
+                            {row?.type === "Paid"
+                              ? Utils.formatToCurrency(row?.cost, "$")
+                              : "Free"}
                           </TableCell>
                           <TableCell component="td" scope="row" align="right">
                             {row?.results}

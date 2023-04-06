@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, createRef } from "react";
 import useStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import paymentServices from "../../services/payment";
@@ -20,17 +20,21 @@ import {
   TablePagination,
   IconButton,
 } from "@mui/material";
+
 import {
-  LastPage as LastPageIcon,
+  LastPage,
   KeyboardArrowRight,
   KeyboardArrowLeft,
-  FirstPage as FirstPageIcon,
+  FirstPage,
+  Download,
 } from "@mui/icons-material";
+
 import { LinkButton, Text, Button } from "../../controls";
 import { useTheme } from "@mui/material/styles";
 import BasicDateRangePicker from "../../controls/DatePicker";
 import Utils from "../../utils/utils";
-import CloudDownloadTwoToneIcon from "@mui/icons-material/CloudDownloadTwoTone";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -49,7 +53,7 @@ function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="first page"
       >
-        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+        {theme.direction === "rtl" ? <LastPage /> : <FirstPage />}
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
@@ -78,7 +82,7 @@ function TablePaginationActions(props) {
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
-        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+        {theme.direction === "rtl" ? <FirstPage /> : <LastPage />}
       </IconButton>
     </Box>
   );
@@ -150,6 +154,60 @@ function Payments() {
     csvLinkRef.current.link.click();
   };
 
+  const handleCreateInvoice = (data) => {
+    try {
+      let html = Utils.getInvoiceHtml();
+      html = Utils.replaceAll(`{name}`, data?.userName, html);
+      html = Utils.replaceAll(
+        `{invoiceNumber}`,
+        moment(data?.date).format("X"),
+        html
+      );
+      html = Utils.replaceAll(
+        `{date}`,
+        moment(data?.date).format("DD MMMM YYYY"),
+        html
+      );
+      html = Utils.replaceAll(
+        `{description}`,
+        `Credits purchased with amount ${Utils.formatToCurrency(
+          data?.amount,
+          "$"
+        )}`,
+        html
+      );
+      html = Utils.replaceAll(
+        `{amount}`,
+        Utils.formatToCurrency(data?.amount, "$"),
+        html
+      );
+
+      var HTMLStringContainer = document.createElement("div");
+      HTMLStringContainer.setAttribute("id", "invoiceTemplateId");
+      HTMLStringContainer.innerHTML = html;
+      HTMLStringContainer.style.fontSize = "30px";
+      document.body.append(HTMLStringContainer);
+      html2canvas(document.getElementById("invoiceTemplateId")).then(
+        (canvas) => {
+          try {
+            const imgData = canvas.toDataURL("image/jpeg");
+            const pdf = new jsPDF("p", "px", "a4");
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save("download.pdf");
+            document.getElementById("invoiceTemplateId").remove();
+          } catch {
+            setErrorMessage("Something went wrong.");
+          }
+        }
+      );
+    } catch {
+      setErrorMessage("Something went wrong.");
+    }
+  };
+
   return (
     <>
       <Grid container spacing={2} sx={{ p: 2 }}>
@@ -200,7 +258,7 @@ function Payments() {
 
             <Button
               sx={{ float: "right" }}
-              icon={<CloudDownloadTwoToneIcon />}
+              icon={<Download />}
               text="Export"
               onClick={handleExport}
               width={120}
@@ -230,6 +288,11 @@ function Payments() {
                         <TableCell component="th" scope="row" align="right">
                           BTC
                         </TableCell>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          align="right"
+                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -262,6 +325,18 @@ function Payments() {
                           </TableCell>
                           <TableCell component="td" scope="row" align="right">
                             {row?.btc}
+                          </TableCell>
+                          <TableCell component="td" scope="row" align="right">
+                            <Button
+                              size="small"
+                              variant="text"
+                              width={100}
+                              icon={<Download />}
+                              text="Invoice"
+                              onClick={() => handleCreateInvoice(row)}
+                            >
+                              Invoice
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
