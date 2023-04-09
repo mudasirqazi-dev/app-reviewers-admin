@@ -26,9 +26,8 @@ import {
 	FirstPage,
 	Download
 } from "@mui/icons-material";
-import { LinkButton, Text, Button } from "../../controls";
+import { LinkButton, Text, Button, DateRangePicker } from "../../controls";
 import { useTheme } from "@mui/material/styles";
-import DateRangePicker from "../../controls/DateRangePicker";
 import Utils from "../../utils/utils";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";

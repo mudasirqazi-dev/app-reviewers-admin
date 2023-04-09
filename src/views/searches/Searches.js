@@ -26,9 +26,8 @@ import {
 	KeyboardArrowLeft,
 	FirstPage as FirstPageIcon
 } from "@mui/icons-material";
-import { LinkButton, Text, Button } from "../../controls";
+import { LinkButton, Text, DateRangePicker } from "../../controls";
 import { useTheme } from "@mui/material/styles";
-import DateRangePicker from "../../controls/DateRangePicker";
 import Utils from "../../utils/utils";
 
 function TablePaginationActions(props) {
