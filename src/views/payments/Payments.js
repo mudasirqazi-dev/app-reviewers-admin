@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import paymentServices from "../../services/payment";
 import moment from "moment";
 import { CSVLink } from "react-csv";
-
 import {
 	Grid,
 	Typography,
@@ -20,7 +19,6 @@ import {
 	TablePagination,
 	IconButton
 } from "@mui/material";
-
 import {
 	LastPage,
 	KeyboardArrowRight,
@@ -28,10 +26,9 @@ import {
 	FirstPage,
 	Download
 } from "@mui/icons-material";
-
 import { LinkButton, Text, Button } from "../../controls";
 import { useTheme } from "@mui/material/styles";
-import BasicDateRangePicker from "../../controls/DatePicker";
+import DateRangePicker from "../../controls/DateRangePicker";
 import Utils from "../../utils/utils";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -228,16 +225,16 @@ function Payments() {
 			<Grid item xs={12} md={12}>
 				<Box component={Paper} sx={{ p: 2 }}>
 					<Grid container>
-						<Grid item variant="h6" xs={7} md={7}>
+						<Grid item variant="h6" xs={6} md={6}>
 							<Text
 								label="Type to search payments"
 								value={keyword}
 								onChange={setKeyword}
 							/>
 						</Grid>
-
+						<Grid item xs={1} md={1}></Grid>
 						<Grid item xs={5} md={5}>
-							<BasicDateRangePicker arr={arr} setArr={setArr} />
+							<DateRangePicker arr={arr} setArr={setArr} />
 						</Grid>
 					</Grid>
 				</Box>

@@ -3,7 +3,6 @@ import useStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import searchServices from "../../services/search";
 import moment from "moment";
-
 import {
 	Grid,
 	Typography,
@@ -29,7 +28,7 @@ import {
 } from "@mui/icons-material";
 import { LinkButton, Text, Button } from "../../controls";
 import { useTheme } from "@mui/material/styles";
-import BasicDateRangePicker from "../../controls/DatePicker";
+import DateRangePicker from "../../controls/DateRangePicker";
 import Utils from "../../utils/utils";
 
 function TablePaginationActions(props) {
@@ -181,36 +180,17 @@ function Searches() {
 				<Grid item xs={12} md={12}>
 					<Box component={Paper} sx={{ p: 2 }}>
 						<Grid container>
-							<Grid item variant="h6" xs={7} md={7}>
+							<Grid item variant="h6" xs={6} md={6}>
 								<Text
 									label="Type to search keyword or user-name"
 									value={keyword}
 									onChange={setKeyword}
 								/>
 							</Grid>
+							<Grid item xs={1} md={1}></Grid>
 							<Grid item xs={5} md={5}>
-								<BasicDateRangePicker
-									arr={arr}
-									setArr={setArr}
-								/>
+								<DateRangePicker arr={arr} setArr={setArr} />
 							</Grid>
-
-							{/* <Grid item xs={2} md={2}>
-								<Select
-									value={interval}
-									onChange={handleIntervalChange}
-									sx={{ ml: 2, mt: "10px", width: "200px" }}
-								>
-									<MenuItem value="0">All time</MenuItem>
-									<MenuItem value="daily">Today</MenuItem>
-									<MenuItem value="weekly">
-										Current Week
-									</MenuItem>
-									<MenuItem value="monthly">
-										Current Month
-									</MenuItem>
-								</Select>
-							</Grid> */}
 						</Grid>
 					</Box>
 				</Grid>
