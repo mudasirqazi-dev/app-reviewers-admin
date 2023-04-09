@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import useStore from "../../store/store";
-import { useNavigate } from "react-router-dom";
-import searchServices from "../../services/search";
+import {
+	PersonOutlineTwoTone,
+	AccessTimeTwoTone,
+	EmailTwoTone
+} from "@mui/icons-material";
 import moment from "moment";
+import CreditCardTwoToneIcon from "@mui/icons-material/CreditCardTwoTone";
+import FunctionsTwoToneIcon from "@mui/icons-material/FunctionsTwoTone";
+import userService from "../../services/user";
 
 import {
 	Grid,
@@ -17,9 +24,7 @@ import {
 	TableCell,
 	TableFooter,
 	TablePagination,
-	IconButton,
-	Select,
-	MenuItem
+	IconButton
 } from "@mui/material";
 import {
 	LastPage as LastPageIcon,
@@ -27,9 +32,7 @@ import {
 	KeyboardArrowLeft,
 	FirstPage as FirstPageIcon
 } from "@mui/icons-material";
-import { LinkButton, Text, Button } from "../../controls";
 import { useTheme } from "@mui/material/styles";
-import BasicDateRangePicker from "../../controls/DatePicker";
 import Utils from "../../utils/utils";
 
 function TablePaginationActions(props) {
@@ -92,25 +95,23 @@ function TablePaginationActions(props) {
 	);
 }
 
-function Searches() {
+function Profile() {
 	const navigate = useNavigate();
-	const [keyword, setKeyword] = useState("");
-	const [interval, setInterval] = useState("0");
-	const [searches, setSearches] = useState([]);
-	const [arr, setArr] = useState([
-		moment().startOf("month").format("YYYY-MM-DD"),
-		moment().endOf("month").format("YYYY-MM-DD")
-	]);
+	const [user, setUser] = useState(null);
+	const [payments, setPayments] = useState([]);
 
-	const { token, isLoggedIn, setIsLoading, setErrorMessage } = useStore(
+	const { id } = useParams();
+
+	const { setIsLoading, isLoggedIn, setErrorMessage } = useStore(
 		state => state
 	);
 
 	const [isDone, setIsDone] = useState(false);
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searches.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - payments.length) : 0;
 	const handleChangePage = (e, newPage) => setPage(newPage);
 	const handleChangeRowsPerPage = e => {
 		setRowsPerPage(parseInt(e.target.value));
@@ -119,106 +120,165 @@ function Searches() {
 
 	useEffect(() => {
 		if (!isLoggedIn) navigate("/login");
-	}, []);
+		setIsLoading(true);
 
-	useEffect(() => {
-		reload();
-	}, [keyword, arr]);
-
-	const reload = async () => {
-		if (!keyword) setIsLoading(true);
-		let from = arr[0];
-		let to = arr[1];
-		searchServices.get(token, { keyword, from, to }).then(result => {
-			if (result.error) {
-				setErrorMessage(result.error);
+		if (!id) return;
+		userService.getById(id).then(r => {
+			if (r.error) {
+				setErrorMessage(r.error);
 				setIsLoading(false);
 				return;
 			}
-			setSearches(result.data);
-			setIsDone(true);
-			setIsLoading(false);
+			if (r.data) {
+				setUser(r.data.user);
+				setPayments(r.data.payments);
+				setIsDone(true);
+				setIsLoading(false);
+			}
 		});
-	};
-
-	const handleIntervalChange = event => {
-		setInterval(event.target.value);
-		switch (event.target.value) {
-			case "0":
-				setArr(["", ""]);
-				break;
-			case "daily":
-				setArr([
-					moment().format("YYYY-MM-DD"),
-					moment().format("YYYY-MM-DD")
-				]);
-				break;
-			case "weekly":
-				const startOfWeek = moment().startOf("week");
-				const endOfWeek = moment().endOf("week");
-				setArr([startOfWeek.toDate(), endOfWeek.toDate()]);
-				break;
-			case "monthly":
-				const startOfMonth = moment().startOf("month");
-				const endOfMonth = moment().endOf("month");
-				setArr([startOfMonth.toDate(), endOfMonth.toDate()]);
-				break;
-			default:
-				setArr([null, null]);
-				break;
-		}
-	};
+	}, []);
 
 	return (
 		<>
-			<Grid container spacing={2} sx={{ p: 2 }}>
-				<Grid item xs={12} md={12}>
-					<Typography component="p" variant="h4">
-						Searches
-					</Typography>
-				</Grid>
-
-				<Grid item xs={12} md={12}>
-					<Box component={Paper} sx={{ p: 2 }}>
-						<Grid container>
-							<Grid item variant="h6" xs={7} md={7}>
-								<Text
-									label="Type to search keyword or user-name"
-									value={keyword}
-									onChange={setKeyword}
-								/>
-							</Grid>
-							<Grid item xs={5} md={5}>
-								<BasicDateRangePicker
-									arr={arr}
-									setArr={setArr}
-								/>
-							</Grid>
-
-							{/* <Grid item xs={2} md={2}>
-								<Select
-									value={interval}
-									onChange={handleIntervalChange}
-									sx={{ ml: 2, mt: "10px", width: "200px" }}
-								>
-									<MenuItem value="0">All time</MenuItem>
-									<MenuItem value="daily">Today</MenuItem>
-									<MenuItem value="weekly">
-										Current Week
-									</MenuItem>
-									<MenuItem value="monthly">
-										Current Month
-									</MenuItem>
-								</Select>
-							</Grid> */}
+			<Grid container spacing={2} sx={{ p: 2, pt: 2 }}>
+				{isDone && user && (
+					<>
+						<Grid item xs={12} md={12}>
+							<Typography component="p" variant="h4">
+								User Profile
+							</Typography>
 						</Grid>
-					</Box>
-				</Grid>
+						<Grid item xs={12} md={5}>
+							<TableContainer component={Paper}>
+								<Table>
+									<TableBody>
+										<TableRow
+											sx={{
+												"&:last-child td, &:last-child th":
+													{
+														border: 0
+													}
+											}}
+										>
+											<TableCell align="right">
+												<PersonOutlineTwoTone />
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="left"
+											>
+												{user.name}
+											</TableCell>
+										</TableRow>
+										<TableRow
+											sx={{
+												"&:last-child td, &:last-child th":
+													{
+														border: 0
+													}
+											}}
+										>
+											<TableCell align="right">
+												<EmailTwoTone />
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="left"
+											>
+												{user.email}
+											</TableCell>
+										</TableRow>
+										<TableRow
+											sx={{
+												"&:last-child td, &:last-child th":
+													{
+														border: 0
+													}
+											}}
+										>
+											<TableCell align="right">
+												<CreditCardTwoToneIcon />
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="left"
+											>
+												Credits: {user.points}
+											</TableCell>
+										</TableRow>
+										<TableRow
+											sx={{
+												"&:last-child td, &:last-child th":
+													{
+														border: 0
+													}
+											}}
+										>
+											<TableCell align="right">
+												<FunctionsTwoToneIcon />
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="left"
+											>
+												Total:{" "}
+												{payments.reduce(
+													(acc, obj) =>
+														acc +
+														parseFloat(obj?.amount),
+													0
+												)}{" "}
+												USD |{" "}
+												{payments
+													.reduce(
+														(acc, obj) =>
+															acc +
+															parseFloat(
+																obj?.btc
+															),
+														0
+													)
+													.toFixed(2)}{" "}
+												BTC
+											</TableCell>
+										</TableRow>
+										<TableRow
+											sx={{
+												"&:last-child td, &:last-child th":
+													{
+														border: 0
+													}
+											}}
+										>
+											<TableCell align="right">
+												<AccessTimeTwoTone />
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="left"
+											>
+												Member since:{" "}
+												{moment(user.joined).format(
+													"DD MMMM YYYY"
+												)}
+											</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
+							</TableContainer>
+						</Grid>
+					</>
+				)}
 
-				<Grid item xs={12} md={12}>
-					<Box component={Paper} sx={{ p: 2 }}>
-						{isDone && searches.length > 0 && (
-							<TableContainer>
+				<Grid item xs={12} md={7}>
+					{isDone && payments.length > 0 && (
+						<>
+							<TableContainer component={Paper}>
 								<Table size="small">
 									<TableHead>
 										<TableRow>
@@ -227,46 +287,32 @@ function Searches() {
 												scope="row"
 												align="left"
 											>
-												User ({searches.length} records)
-											</TableCell>
-											<TableCell
-												component="th"
-												scope="row"
-												align="left"
-											>
-												Keyword
+												Date ({payments.length} records)
 											</TableCell>
 											<TableCell
 												component="th"
 												scope="row"
 												align="right"
 											>
-												Cost
+												Amount
 											</TableCell>
 											<TableCell
 												component="th"
 												scope="row"
 												align="right"
 											>
-												Results
-											</TableCell>
-											<TableCell
-												component="th"
-												scope="row"
-												align="center"
-											>
-												Date
+												BTC
 											</TableCell>
 										</TableRow>
 									</TableHead>
 									<TableBody>
 										{(rowsPerPage > 0
-											? searches.slice(
+											? payments.slice(
 													page * rowsPerPage,
 													page * rowsPerPage +
 														rowsPerPage
 											  )
-											: searches
+											: payments
 										).map(row => (
 											<TableRow
 												key={row._id}
@@ -282,45 +328,26 @@ function Searches() {
 													scope="row"
 													align="left"
 												>
-													<LinkButton
-														text={row?.userName}
-														to={`/user/${row?.userId}`}
-													/>
-												</TableCell>
-												<TableCell
-													component="td"
-													scope="row"
-													align="left"
-												>
-													{row?.keyword}
-												</TableCell>
-												<TableCell
-													component="td"
-													scope="row"
-													align="right"
-												>
-													{row?.type === "Paid"
-														? Utils.formatToCurrency(
-																row?.cost,
-																"$"
-														  )
-														: "Free"}
-												</TableCell>
-												<TableCell
-													component="td"
-													scope="row"
-													align="right"
-												>
-													{row?.results}
-												</TableCell>
-												<TableCell
-													component="td"
-													scope="row"
-													align="center"
-												>
 													{moment(row?.date).format(
 														"DD MMM YYYY"
 													)}
+												</TableCell>
+												<TableCell
+													component="td"
+													scope="row"
+													align="right"
+												>
+													{Utils.formatToCurrency(
+														row?.amount,
+														"$"
+													)}
+												</TableCell>
+												<TableCell
+													component="td"
+													scope="row"
+													align="right"
+												>
+													{row?.btc}
 												</TableCell>
 											</TableRow>
 										))}
@@ -347,7 +374,7 @@ function Searches() {
 													}
 												]}
 												colSpan={7}
-												count={searches?.length}
+												count={payments?.length}
 												rowsPerPage={rowsPerPage}
 												page={page}
 												SelectProps={{
@@ -369,25 +396,17 @@ function Searches() {
 									</TableFooter>
 								</Table>
 							</TableContainer>
-						)}
-						{isDone && searches.length === 0 && (
-							<TableContainer>
-								<Table size="small" sx={{ mt: 2 }}>
-									<TableBody>
-										<TableRow>
-											<TableCell>
-												No data found.
-											</TableCell>
-										</TableRow>
-									</TableBody>
-								</Table>
-							</TableContainer>
-						)}
-					</Box>
+						</>
+					)}
+					{isDone && payments.length === 0 && (
+						<Typography sx={{ mt: 1 }}>
+							User has no payment history yet.
+						</Typography>
+					)}
 				</Grid>
 			</Grid>
 		</>
 	);
 }
 
-export default Searches;
+export default Profile;

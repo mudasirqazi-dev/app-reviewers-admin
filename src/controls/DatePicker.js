@@ -8,32 +8,27 @@ import { useEffect } from "react";
 import moment from "moment";
 
 export default function DateRangePickerValue({ arr, setArr }) {
-  const [value, setValue] = useState([dayjs(arr[0]), dayjs(arr[1])]);
+	const [value, setValue] = useState([dayjs(arr[0]), dayjs(arr[1])]);
 
-  useEffect(() => {
-    if (value[1]) {
-      setArr([
-        moment(value[0]["$d"]).format("YYYY-MM-DD"),
-        moment(value[1]["$d"]).format("YYYY-MM-DD"),
-      ]);
-    }
-  }, [value]);
+	useEffect(() => {
+		if (value[1]) {
+			setArr([
+				moment(value[0]["$d"]).format("YYYY-MM-DD"),
+				moment(value[1]["$d"]).format("YYYY-MM-DD")
+			]);
+		}
+	}, [value]);
 
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer
-        sx={{ mt: "2px", ml: 2 }}
-        components={["DateRangePicker", "DateRangePicker"]}
-      >
-        <DemoItem component="DateRangePicker">
-          <DateRangePicker
-            value={value}
-            onChange={(e) => {
-              setValue(e);
-            }}
-          />
-        </DemoItem>
-      </DemoContainer>
-    </LocalizationProvider>
-  );
+	return (
+		<LocalizationProvider dateAdapter={AdapterDayjs}>
+			<DemoContainer
+				sx={{ mt: "2px", ml: 2 }}
+				components={["DateRangePicker", "DateRangePicker"]}
+			>
+				<DemoItem component="DateRangePicker">
+					<DateRangePicker value={value} onChange={setValue} />
+				</DemoItem>
+			</DemoContainer>
+		</LocalizationProvider>
+	);
 }
