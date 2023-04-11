@@ -15,7 +15,7 @@ function Confirm({
 	title = "Are you sure?",
 	body = "Are you sure?",
 	noText = "No",
-	yesText = "Sure!"
+	yesText = "Yes"
 }) {
 	return (
 		<Dialog
