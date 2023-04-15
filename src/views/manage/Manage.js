@@ -5,7 +5,6 @@ import { Grid, Typography, Tabs, Tab, Box } from "@mui/material";
 import Costs from "../manage/Costs";
 import Names from "../manage/Names";
 import Buttons from "../manage/Buttons";
-import Subscription from "../manage/Subscription";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,7 +71,6 @@ function Manage() {
             <Tab label="Cost" {...a11yProps(0)} />
             <Tab label="App Names" {...a11yProps(1)} />
             <Tab label="Purchase Buttons" {...a11yProps(2)} />
-            <Tab label="Subscription Amount" {...a11yProps(3)} />
           </Tabs>
           <TabPanel value={value} index={0}>
             <Costs />
@@ -82,9 +80,6 @@ function Manage() {
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Buttons />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <Subscription />
           </TabPanel>
         </Box>
       </Grid>
