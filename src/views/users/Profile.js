@@ -102,7 +102,7 @@ function Profile() {
 
 	const { id } = useParams();
 
-	const { setIsLoading, isLoggedIn, setErrorMessage } = useStore(
+	const { token, setIsLoading, isLoggedIn, setErrorMessage } = useStore(
 		state => state
 	);
 
@@ -123,7 +123,7 @@ function Profile() {
 		setIsLoading(true);
 
 		if (!id) return;
-		userService.getById(id).then(r => {
+		userService.getById(token, id).then(r => {
 			if (r.error) {
 				setErrorMessage(r.error);
 				setIsLoading(false);
