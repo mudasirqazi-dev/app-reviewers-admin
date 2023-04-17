@@ -3,7 +3,7 @@ import useStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Grid, Typography, Box } from "@mui/material";
 import {
-  AllInclusiveTwoTone,
+  AppsTwoTone,
   CreditScoreTwoTone,
   Groups2TwoTone,
   QueryStatsTwoTone,
@@ -41,6 +41,7 @@ function BasicCard({ color, number, icon, text }) {
 function Home() {
   let [users, setUsers] = useState(0);
   let [payments, setPayments] = useState(0);
+  let [apps, setApps] = useState(0);
   let [searches, setSearches] = useState(0);
   const navigate = useNavigate();
 
@@ -60,6 +61,7 @@ function Home() {
       if (r.data) {
         setUsers(r.data.users);
         setPayments(r.data.payments);
+        setApps(r.data.apps);
         setSearches(r.data.searches);
         setIsLoading(false);
       }
@@ -79,7 +81,7 @@ function Home() {
         </Typography>
       </Grid>
 
-      <Grid item xs={12} sm={12} md={4} lg={4}>
+      <Grid item xs={12} sm={12} md={6} lg={3}>
         <BasicCard
           number={users}
           icon={<Groups2TwoTone color="warning" sx={{ fontSize: 60 }} />}
@@ -88,7 +90,7 @@ function Home() {
         />
       </Grid>
 
-      <Grid item xs={12} sm={12} md={4} lg={4}>
+      <Grid item xs={12} sm={12} md={6} lg={3}>
         <BasicCard
           number={payments}
           icon={<CreditScoreTwoTone color="error" sx={{ fontSize: 60 }} />}
@@ -97,16 +99,16 @@ function Home() {
         />
       </Grid>
 
-      {/* <Grid item xs={12} sm={6} md={6} lg={3}>
+      <Grid item xs={12} sm={12} md={6} lg={3}>
         <BasicCard
-          number={0}
-          icon={<AllInclusiveTwoTone sx={{ fontSize: 60, color: "#5E72FF" }} />}
-          text="Active subscriptions"
+          number={apps}
+          icon={<AppsTwoTone sx={{ fontSize: 60, color: "#5E72FF" }} />}
+          text="Total apps"
           color="#EEF0FF"
         />
-      </Grid> */}
+      </Grid>
 
-      <Grid item xs={12} sm={12} md={4} lg={4}>
+      <Grid item xs={12} sm={12} md={6} lg={3}>
         <BasicCard
           number={searches}
           icon={<QueryStatsTwoTone color="success" sx={{ fontSize: 60 }} />}
