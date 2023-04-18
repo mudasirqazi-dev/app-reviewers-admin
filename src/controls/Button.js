@@ -19,7 +19,7 @@ function Button({
       size={size || "large"}
       fullWidth
       startIcon={icon ? icon : null}
-      style={{ minHeight: height || 40, width: width, marginLeft: 2 }}
+      style={{ minHeight: height || 50, width: width, marginLeft: 2 }}
       {...rest}
     >
       {text}

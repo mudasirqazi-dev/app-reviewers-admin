@@ -168,15 +168,14 @@ function Searches() {
         <Grid item xs={12} md={12}>
           <Box component={Paper} sx={{ p: 2 }}>
             <Grid container>
-              <Grid item variant="h6" xs={6} md={6}>
+              <Grid item variant="h6" xs={8} md={8}>
                 <Text
                   label="Type to search keyword or user-name"
                   value={keyword}
                   onChange={setKeyword}
                 />
               </Grid>
-              <Grid item xs={1} md={1}></Grid>
-              <Grid item xs={5} md={5}>
+              <Grid item xs={4} md={4} sx={{ pl: 2 }}>
                 <DateRangePicker arr={arr} setArr={setArr} />
               </Grid>
             </Grid>
