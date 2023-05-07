@@ -127,7 +127,7 @@ function Payments() {
         setIsLoading(false);
         return;
       }
-      setPayments(result.data);
+      setPayments(result.data.results);
       setIsDone(true);
       setIsLoading(false);
     });
