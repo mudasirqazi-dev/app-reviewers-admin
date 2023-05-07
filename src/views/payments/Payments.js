@@ -1,24 +1,10 @@
-import React, { useEffect, useState, useRef, createRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import useStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import paymentServices from "../../services/payment";
 import moment from "moment";
 import { CSVLink } from "react-csv";
-import {
-  Grid,
-  Typography,
-  Box,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableFooter,
-  TablePagination,
-  IconButton,
-} from "@mui/material";
+import { Grid, Typography, Box, Paper, IconButton } from "@mui/material";
 import {
   LastPage,
   KeyboardArrowRight,
@@ -31,83 +17,73 @@ import { useTheme } from "@mui/material/styles";
 import Utils from "../../utils/utils";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-
-function TablePaginationActions(props) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
-  const handleFirstPageButtonClick = (e) => onPageChange(e, 0);
-  const handleBackButtonClick = (e) => onPageChange(e, page - 1);
-  const handleNextButtonClick = (e) => onPageChange(e, page + 1);
-
-  const handleLastPageButtonClick = (e) =>
-    onPageChange(e, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === "rtl" ? <LastPage /> : <FirstPage />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === "rtl" ? <FirstPage /> : <LastPage />}
-      </IconButton>
-    </Box>
-  );
-}
+import CustomTable from "../../components/Table";
+import utils from "../../utils/utils";
 
 function Payments() {
   const navigate = useNavigate();
-  const [keyword, setKeyword] = useState("");
-
   const { token, isLoggedIn, setIsLoading, setErrorMessage } = useStore(
     (state) => state
   );
-  const [isDone, setIsDone] = useState(false);
-  const [payments, setPayments] = useState([]);
+  const csvLinkRef = useRef();
   const [arr, setArr] = useState([
     moment().startOf("month").format("YYYY-MM-DD"),
     moment().endOf("month").format("YYYY-MM-DD"),
   ]);
-  const csvLinkRef = useRef();
 
+  const [keyword, setKeyword] = useState("");
+  const [payments, setPayments] = useState([]);
+  const [isDone, setIsDone] = useState(false);
+  const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - payments?.length) : 0;
-  const handleChangePage = (e, newPage) => setPage(newPage);
-  const handleChangeRowsPerPage = (e) => {
-    setRowsPerPage(parseInt(e.target.value));
-    setPage(0);
-  };
+  const headers = [
+    {
+      title: "User Name",
+      key: "userName",
+      align: "left",
+      formatter: (k) => (
+        <LinkButton text={k.userName} to={`/user/${k.userId}`}></LinkButton>
+      ),
+    },
+    {
+      title: "Date",
+      key: "date",
+      align: "center",
+      formatter: (k) => moment(k.date).format("DD MMM YYYY"),
+    },
+    {
+      title: "Amount",
+      key: "amount",
+      align: "right",
+      formatter: (k) => utils.formatToCurrency(k.amount, "$"),
+    },
+    {
+      title: "BTC",
+      key: "btc",
+      align: "right",
+      formatter: (k) => utils.formatBtcToCurrency(k.btc, ""),
+    },
+    {
+      title: "",
+      key: "userName",
+      align: "right",
+      formatter: (row) => (
+        <>
+          <Button
+            size="small"
+            variant="text"
+            width={100}
+            icon={<Download />}
+            text="Invoice"
+            onClick={() => handleCreateInvoice(row)}
+          >
+            Invoice
+          </Button>
+        </>
+      ),
+    },
+  ];
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
@@ -128,6 +104,7 @@ function Payments() {
         return;
       }
       setPayments(result.data.results);
+      setCount(result.data.count);
       setIsDone(true);
       setIsLoading(false);
     });
@@ -265,126 +242,17 @@ function Payments() {
             filename={"payments-data.csv"}
           ></CSVLink>
 
-          {isDone && payments?.length > 0 && (
-            <TableContainer sx={{ mt: 3 }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" scope="row" align="left">
-                      User ({payments?.length} records)
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="center">
-                      Date
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="right">
-                      Amount
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="right">
-                      BTC
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="right"
-                    ></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(rowsPerPage > 0
-                    ? payments?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                    : payments
-                  ).map((row) => (
-                    <TableRow
-                      key={row._id}
-                      sx={{
-                        "&:last-child td, &:last-child th": {
-                          border: 0,
-                        },
-                      }}
-                    >
-                      <TableCell component="td" scope="row" align="left">
-                        <LinkButton
-                          text={row?.userName}
-                          to={`/user/${row?.userId}`}
-                        />
-                      </TableCell>
-                      <TableCell component="td" scope="row" align="center">
-                        {moment(row?.date).format("DD MMM YYYY")}
-                      </TableCell>
-                      <TableCell component="td" scope="row" align="right">
-                        {Utils.formatToCurrency(row?.amount, "$")}
-                      </TableCell>
-                      <TableCell component="td" scope="row" align="right">
-                        {row?.btc}
-                      </TableCell>
-                      <TableCell component="td" scope="row" align="right">
-                        <Button
-                          size="small"
-                          variant="text"
-                          width={100}
-                          icon={<Download />}
-                          text="Invoice"
-                          onClick={() => handleCreateInvoice(row)}
-                        >
-                          Invoice
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {emptyRows > 0 && (
-                    <TableRow
-                      style={{
-                        height: 53 * emptyRows,
-                      }}
-                    >
-                      <TableCell colSpan={1} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                <TableFooter>
-                  <TableRow>
-                    <TablePagination
-                      rowsPerPageOptions={[
-                        10,
-                        20,
-                        30,
-                        {
-                          label: "All",
-                          value: -1,
-                        },
-                      ]}
-                      colSpan={7}
-                      count={payments?.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      SelectProps={{
-                        inputProps: {
-                          "aria-label": "rows per page",
-                        },
-                        native: true,
-                      }}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                      ActionsComponent={TablePaginationActions}
-                    />
-                  </TableRow>
-                </TableFooter>
-              </Table>
-            </TableContainer>
-          )}
-          {isDone && payments?.length === 0 && (
-            <TableContainer>
-              <Table size="small" sx={{ mt: 2 }}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>No data found.</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+          {isDone && (
+            <CustomTable
+              isDone={isDone}
+              data={payments}
+              headers={headers}
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
           )}
         </Box>
       </Grid>
