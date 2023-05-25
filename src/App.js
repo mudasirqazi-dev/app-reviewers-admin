@@ -19,52 +19,52 @@ import Users from "./views/users/List";
 import Searches from "./views/searches/Searches";
 
 function App() {
-  const {
-    isLoading,
-    isLoggedIn,
-    user,
-    errorMessage,
-    setErrorMessage,
-    successMessage,
-    setSuccessMessage,
-    infoMessage,
-    setInfoMessage,
-  } = useStore((state) => state);
+	const {
+		isLoading,
+		isLoggedIn,
+		user,
+		errorMessage,
+		setErrorMessage,
+		successMessage,
+		setSuccessMessage,
+		infoMessage,
+		setInfoMessage
+	} = useStore(state => state);
 
-  return (
-    <Router>
-      {isLoading === true && <Loading />}
-      <ToastError
-        open={errorMessage?.length > 0}
-        onClose={() => setErrorMessage("")}
-        body={errorMessage}
-      />
-      <ToastSuccess
-        open={successMessage?.length > 0}
-        onClose={() => setSuccessMessage("")}
-        body={successMessage}
-      />
-      <ToastInfo
-        open={infoMessage?.length > 0}
-        onClose={() => setInfoMessage("")}
-        body={infoMessage}
-      />
-      {isLoggedIn && user && <Header />}
-      <Routes>
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/fp" element={<ForgetPassword />} />
-        <Route exact path="/rp" element={<ResetPassword />} />
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/users" element={<Users />} />
-        <Route exact path="/payments" element={<Payments />} />
-        <Route exact path="/searches" element={<Searches />} />
-        <Route exact path="/profile" element={<Profile />} />
-        <Route path="/user/:id" element={<UserProfile />} />
-        <Route exact path="/settings" element={<ChangePassword />} />
-        <Route exact path="/manage" element={<Manage />} />
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			{isLoading === true && <Loading />}
+			<ToastError
+				open={errorMessage?.length > 0}
+				onClose={() => setErrorMessage("")}
+				body={errorMessage}
+			/>
+			<ToastSuccess
+				open={successMessage?.length > 0}
+				onClose={() => setSuccessMessage("")}
+				body={successMessage}
+			/>
+			<ToastInfo
+				open={infoMessage?.length > 0}
+				onClose={() => setInfoMessage("")}
+				body={infoMessage}
+			/>
+			{isLoggedIn && user && <Header />}
+			<Routes>
+				<Route exact path="/login" element={<Login />} />
+				<Route exact path="/fp" element={<ForgetPassword />} />
+				<Route exact path="/rp" element={<ResetPassword />} />
+				<Route exact path="/" element={<Home />} />
+				<Route exact path="/users" element={<Users />} />
+				<Route exact path="/payments" element={<Payments />} />
+				<Route exact path="/searches" element={<Searches />} />
+				<Route exact path="/profile" element={<Profile />} />
+				<Route path="/user/:id" element={<UserProfile />} />
+				<Route exact path="/settings" element={<ChangePassword />} />
+				<Route exact path="/manage" element={<Manage />} />
+			</Routes>
+		</Router>
+	);
 }
 
 export default App;
