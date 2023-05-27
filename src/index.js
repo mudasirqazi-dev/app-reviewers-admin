@@ -4,19 +4,19 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#191919",
-    },
-  },
+	palette: {
+		primary: {
+			main: "#191919"
+		}
+	}
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <ThemeProvider theme={theme}>
-    <App />
-  </ThemeProvider>
+	<ThemeProvider theme={theme}>
+		<App />
+	</ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
